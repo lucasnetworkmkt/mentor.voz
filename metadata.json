@@ -1,0 +1,7 @@
+{
+  "name": " Voz",
+  "description": "Um mentor de execução por voz, focado em direção estratégica e ação imediata baseada no Código da Evolução.",
+  "requestFramePermissions": [
+    "microphone"
+  ]
+}
