@@ -163,12 +163,12 @@ const App: React.FC = () => {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen relative selection:bg-[#E50914] selection:text-white overflow-hidden">
+    <div className="flex flex-col items-center justify-start min-h-screen relative selection:bg-[#E50914] selection:text-white overflow-hidden pt-32">
       {/* Background Decor */}
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-gray-900 via-[#0A0A0A] to-[#0A0A0A] -z-10" />
 
       {/* Header */}
-      <header className="absolute top-6 flex flex-col items-center gap-1">
+      <header className="absolute top-6 flex flex-col items-center gap-1 z-50">
         <h1 className="text-lg font-bold tracking-widest text-[#9FB4C7] uppercase border-b border-[#9FB4C7] pb-1">
           Mentor da Evolução
         </h1>
@@ -177,50 +177,16 @@ const App: React.FC = () => {
         </span>
       </header>
 
-      {/* Main Content */}
-      <main className="flex flex-col items-center justify-center gap-6 w-full max-w-sm px-4">
+      {/* Main Content - No gap in container, manual spacing */}
+      <main className="flex flex-col items-center justify-center w-full max-w-sm px-4 z-10">
         
         {/* Visualizer Area */}
-        <div className="relative">
+        <div className="relative pointer-events-none">
           <AudioVisualizer volume={volume} isActive={isConnected} />
         </div>
 
-        {/* Status Text / Block Message */}
-        <div className="h-12 flex flex-col items-center justify-center text-center gap-1">
-          {isBlocked ? (
-            <>
-              <p className="text-[#E50914] text-xs font-bold tracking-wide animate-pulse">
-                LIMITE ATINGIDO
-              </p>
-              <p className="text-[#9FB4C7] text-[10px]">
-                Volte em: <span className="text-white font-mono">{remainingTime}</span>
-              </p>
-            </>
-          ) : (
-            <>
-              {isConnecting && (
-                <p className="text-[#9FB4C7] text-xs animate-pulse">Conectando...</p>
-              )}
-              {isConnected && (
-                <p className="text-[#FFD700] text-xs font-medium tracking-wide">MENTOR OUVINDO</p>
-              )}
-              {!isConnected && !isConnecting && !error && (
-                <div className="flex flex-col gap-0.5">
-                    <p className="text-gray-500 text-xs">Toque para iniciar</p>
-                    <p className="text-gray-700 text-[9px] uppercase tracking-wider">
-                        Usos: <span className={usesCount >= 4 ? "text-[#E50914]" : "text-gray-500"}>{usesCount}</span>/{MAX_USES}
-                    </p>
-                </div>
-              )}
-              {error && (
-                <p className="text-red-500 text-xs">{error}</p>
-              )}
-            </>
-          )}
-        </div>
-
-        {/* Controls */}
-        <div className="flex items-center justify-center">
+        {/* Controls - Pulled UP drastically to sit near the visualizer ball */}
+        <div className="flex items-center justify-center -mt-10 mb-6 z-20">
           {!isConnected ? (
             <button
               onClick={handleConnect}
@@ -253,6 +219,41 @@ const App: React.FC = () => {
             </button>
           )}
         </div>
+
+        {/* Status Text / Block Message - Moved BELOW button */}
+        <div className="h-auto min-h-[2rem] flex flex-col items-center justify-center text-center gap-1">
+          {isBlocked ? (
+            <>
+              <p className="text-[#E50914] text-xs font-bold tracking-wide animate-pulse">
+                LIMITE ATINGIDO
+              </p>
+              <p className="text-[#9FB4C7] text-[10px]">
+                Volte em: <span className="text-white font-mono">{remainingTime}</span>
+              </p>
+            </>
+          ) : (
+            <>
+              {isConnecting && (
+                <p className="text-[#9FB4C7] text-xs animate-pulse">Conectando...</p>
+              )}
+              {isConnected && (
+                <p className="text-[#FFD700] text-xs font-medium tracking-wide">MENTOR OUVINDO</p>
+              )}
+              {!isConnected && !isConnecting && !error && (
+                <div className="flex flex-col gap-0.5">
+                    <p className="text-gray-500 text-xs">Toque para iniciar</p>
+                    <p className="text-gray-700 text-[9px] uppercase tracking-wider">
+                        Usos: <span className={usesCount >= 4 ? "text-[#E50914]" : "text-gray-500"}>{usesCount}</span>/{MAX_USES}
+                    </p>
+                </div>
+              )}
+              {error && (
+                <p className="text-red-500 text-xs">{error}</p>
+              )}
+            </>
+          )}
+        </div>
+
       </main>
 
       {/* Footer / Instructions */}
